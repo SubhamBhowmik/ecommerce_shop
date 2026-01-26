@@ -4,6 +4,8 @@ import CustomButtons from './CustomButtons';
 import Search from './Search';
 import { Menu } from '@material-ui/icons';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearSelectedCategory } from '../../redux/actions/productActions';
 
 const useStyle = makeStyles(theme => ({
     header: {
@@ -61,6 +63,7 @@ const Header = () => {
     const classes = useStyle();
     const logoURL = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/flipkart-plus_8d85f4.png';
     const subURL = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/plus_aef861.png';
+    const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
 
@@ -70,6 +73,10 @@ const Header = () => {
 
     const handleOpen = () => {
         setOpen(true);
+    }
+
+    const handleHomeClick = () => {
+        dispatch(clearSelectedCategory());
     }
 
     const list = () => (
@@ -98,7 +105,7 @@ const Header = () => {
                     {list()}
                 </Drawer>
 
-                <Link to='/' className={classes.component}>
+                <Link to='/' className={classes.component} onClick={handleHomeClick}>
                    <Typography className={classes.textsize}>ShopIndia</Typography>
                     
                 </Link>

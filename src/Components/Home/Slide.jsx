@@ -102,13 +102,19 @@ const MultiSlide = ({ data = [], timer, title }) => {
                 itemClass="carousel-item-padding-40-px"
             >
                 {
-                    data.map(temp => (
-                        <Link to={`product/${temp.id}`} style={{textDecoration: 'none'}}>
+                    data.map((temp, index) => (
+                        <Link key={temp.id || index} to={`product/${temp.id}`} style={{textDecoration: 'none'}}>
                             <Box textAlign="center" className={classes.wrapper}>
-                                <img src={temp.url} className={classes.image} />
-                                <Typography className={classes.text} style={{ fontWeight: 600, color: '#212121' }}>{temp.title.shortTitle}</Typography>
-                                <Typography className={classes.text} style={{ color: 'green' }}>{temp.discount}</Typography>
-                                <Typography className={classes.text} style={{ color: '#212121', opacity: '.6' }}>{temp.tagline}</Typography>
+                                <img src={temp.url || ''} className={classes.image} alt={temp.title?.shortTitle || temp.name || 'Product'} />
+                                <Typography className={classes.text} style={{ fontWeight: 600, color: '#212121' }}>
+                                    {temp.title?.shortTitle || temp.name || 'Product'}
+                                </Typography>
+                                <Typography className={classes.text} style={{ color: 'green' }}>
+                                    {temp.discount || `₹${temp.price || 0}`}
+                                </Typography>
+                                <Typography className={classes.text} style={{ color: '#212121', opacity: '.6' }}>
+                                    {temp.tagline || temp.subcategory || temp.category || ''}
+                                </Typography>
                             </Box>
                         </Link>
                     ))

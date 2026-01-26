@@ -1,5 +1,7 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import { navData } from '../../constant/data';
+import { useDispatch } from 'react-redux';
+import { getProductsByCategory } from '../../redux/actions/productActions';
 
 const useStyle = makeStyles(theme => ({
     component: {
@@ -13,7 +15,11 @@ const useStyle = makeStyles(theme => ({
     },
     container: {
         padding: '30px 20px',
-        textAlign: 'center'
+        textAlign: 'center',
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#f5f5f5'
+        }
     },
     image: {
         width: 64
@@ -27,12 +33,22 @@ const useStyle = makeStyles(theme => ({
 
 const NavBar = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+
+    const handleCategoryClick = (category) => {
+        dispatch(getProductsByCategory(category));
+    };
+
     return (
         <Box className={classes.component}>
             {
-                navData.map(temp => (
-                    <Box className={classes.container}>
-                        <img src={temp.url} className={classes.image} />
+                navData.map((temp, index) => (
+                    <Box 
+                        key={index}
+                        className={classes.container}
+                        onClick={() => handleCategoryClick(temp.text)}
+                    >
+                        <img src={temp.url} className={classes.image} alt={temp.text} />
                         <Typography className={classes.text}>{temp.text}</Typography>
                     </Box>
                 ))

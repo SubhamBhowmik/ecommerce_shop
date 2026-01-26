@@ -4,6 +4,7 @@ import Banner from './Home/Banner';
 import MidSlide from './Home/MidSlide';
 import MidSection from './Home/MidSection';
 import Slide from './Home/Slide';
+import ProductList from './Home/ProductList';
 import React,  { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // hooks
 import { getProducts as listProducts } from '../redux/actions/productActions';
@@ -19,14 +20,28 @@ const Home = () => {
     const classes = useStyle();
 
     const getProducts = useSelector(state => state.getProducts);
-    const { products, error } = getProducts;
+    const { products, error, selectedCategory } = getProducts;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(listProducts())
-    }, [dispatch])
+        // Only load default products if no category is selected
+        if (!selectedCategory) {
+            dispatch(listProducts())
+        }
+    }, [dispatch, selectedCategory])
 
+    // Show list view when a category is selected
+    if (selectedCategory) {
+        return (
+            <>
+                <NavBar />
+                <ProductList products={products} category={selectedCategory} />
+            </>
+        );
+    }
+
+    // Default home view with carousels
     return (
         <>
             <NavBar />
